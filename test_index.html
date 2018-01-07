@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Test runner of Conway's Game of Life</title>
+
+  <link rel="stylesheet" href="css/test_index.css">
+
+  <script src="js/Cell.js"></script>
+  <script src="js/Game.js"></script>
+
+  <script src="js/TestGameRunner.js"></script>
+
+</head>
+
+<body>
+  <table id='result'>
+    <tr>
+      <th>Name</th>
+      <th>Seed</th>
+      <th>Number of iterations</th>
+      <th>Expected state</th>
+      <th>Result</th>
+    </tr>
+  </table>
+</body>
+
+<script>
+  const table = document.getElementById('result');
+
+  const dataset = [
+    {
+      name: 'Empty',
+      seed: [[0, 0], [0, 0]],
+      num_of_iterations: 1,
+      expected_state: [[0, 0], [0, 0]]
+    },
+    {
+      name: 'Block',
+      seed: [
+        [0, 0, 0, 0],
+        [0, 1, 1, 0],
+        [0, 1, 1, 0],
+        [0, 0, 0, 0],
+      ],
+      num_of_iterations: 5,
+      expected_state: [
+        [0, 0, 0, 0],
+        [0, 1, 1, 0],
+        [0, 1, 1, 0],
+        [0, 0, 0, 0],
+      ]
+    },
+    {
+      name: 'Beehive',
+      seed: [
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 1, 1, 0, 0],
+        [0, 1, 0, 0, 1, 0],
+        [0, 0, 1, 1, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+      ],
+      num_of_iterations: 5,
+      expected_state: [
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 1, 1, 0, 0],
+        [0, 1, 0, 0, 1, 0],
+        [0, 0, 1, 1, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+      ]
+    },
+    {
+      name: 'Blinker 1',
+      seed: [
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+      ],
+      num_of_iterations: 1,
+      expected_state: [
+        [0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0],
+        [0, 0, 1, 0, 0],
+        [0, 0, 1, 0, 0],
+        [0, 0, 0, 0, 0],
+      ]
+    },
+    {
+      name: 'Blinker 2',
+      seed: [
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+      ],
+      num_of_iterations: 2,
+      expected_state: [
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+      ]
+    },
+  ];
+
+  var gameRunner = new TestGameRunner();
+  for (data of dataset) {
+    let tr = document.createElement('tr');
+
+    tr.appendChild(valueToTableCell(data.name));
+    tr.appendChild(matrixToTableCell(data.seed));
+    tr.appendChild(valueToTableCell(data.num_of_iterations));
+    tr.appendChild(matrixToTableCell(data.expected_state));
+    tr.appendChild(valueToTableCell(gameRunner.test_game(data.seed, data.num_of_iterations, data.expected_state)));
+
+    table.appendChild(tr);
+  }
+
+  function matrixToTableCell(array) {
+    let td = document.createElement('td');
+    data.seed.forEach((row)=> {
+      td.appendChild(document.createTextNode(row));
+      td.appendChild(document.createElement("br"));
+    })
+    return td;
+  }
+
+  function valueToTableCell(value) {
+    let td = document.createElement('td');
+    td.appendChild(document.createTextNode(value));
+    return td;
+  }
+</script>
+
+</html>

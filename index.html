@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Conway's Game of Life</title>
+
+  <link rel="stylesheet" href="css/index.css">
+
+  <script src="js/Cell.js"></script>
+  <script src="js/Game.js"></script>
+
+  <script src="js/Canvas.js"></script>
+  <script src="js/CanvasGameRunner.js"></script>
+
+  <script type="text/javascript">
+      var gameRunner;
+      function initGameRunner() {
+        const gridCanvasElement = document.getElementById('grid-layer');
+        const gameCanvasElement = document.getElementById('game-layer');
+        if (gridCanvasElement.getContext && gameCanvasElement.getContext) {
+          gameRunner = new CanvasGameRunner(gridCanvasElement, gameCanvasElement);
+        }
+      }
+  </script>
+</head>
+
+<body onload="initGameRunner()">
+  <div id="stage">
+    <canvas id="grid-layer"></canvas>
+    <canvas id="game-layer"></canvas>
+  </div>
+  <div id="controls">
+    <button id="next" onclick="gameRunner.nextGameStep()">Next</button>
+    <button id="start" onclick="gameRunner.runGame()">Start</button>
+    <button id="stop" onclick="gameRunner.stopGame()">Stop</button>
+    <div id="step"></div>
+  </div>
+
+</body>
+</html>
