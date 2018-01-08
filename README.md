@@ -1,6 +1,6 @@
 # Conway's Game of Life
 
-[The Game of Life] (https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life), also known simply as Life, is a cellular automaton devised by the British mathematician John Horton Conway in 1970.
+[The Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life), also known simply as Life, is a cellular automaton devised by the British mathematician John Horton Conway in 1970.
 
 ### Prerequisites
 
@@ -21,7 +21,7 @@ As per requirements a separate function for running tests manually is provided.
 Method test_game(seed, num_of_iterations, expected_state) is defined in class TestGameRunner.js
 To run the test create instance of the class and call it's method.
 Example:
-'''
+```
   var data = {
     seed: [
       [0, 0, 0, 0],
@@ -39,7 +39,7 @@ Example:
   };
   var test = new TestGameRunner();
   test.test_game(data.seed, data.num_of_iterations, data.expected_state);
-'''
+```
 File 'test_index.html' contains a few examples of usage of TestGameRunner.
 
 ## Unit tests
