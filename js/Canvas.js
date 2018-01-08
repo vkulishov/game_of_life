@@ -1,60 +1,53 @@
+/**
+ * Canvas for displaying a game state.
+ * @param {!Element} canvasElement to be used to dsiplay game
+ * @param {number} cellSize size of cell
+ */
 class Canvas {
   constructor(canvasElement, cellSize) {
     this._canvasElement = canvasElement;
     this._cellSize = cellSize;
     this._canvasContext = this._canvasElement.getContext('2d');
-    this._rowLength = this._canvasElement.width / this._cellSize;
-    this._columnLength = this._canvasElement.height / this._cellSize;
-
-    this._selectedCells = [];
 
     this._canvasRect = this._canvasElement.getBoundingClientRect();
-    this._canvasElement.addEventListener('click', event => this._canvasClickHandler(event));
   }
 
-  get selectedCells() {
-    return this._selectedCells;
-  }
-
-  updateSelectedCells(selectedCells) {
-    this._selectedCells.forEach((cell) => {
-      this._clearCell(cell.x, cell.y);
-    });
-
-    this._selectedCells = selectedCells;
-    this._selectedCells.forEach((cell) => {
-      this._drawCell(cell.x, cell.y);
-    });
-
-  }
-
-  _canvasClickHandler(event) {
-    const canvasCoordinate =  {
-      x: event.clientX - this._canvasRect.left * (this._canvasElement.width  / this._canvasRect.width),
-      y: event.clientY - this._canvasRect.top  * (this._canvasElement.height / this._canvasRect.height)
-    };
-    this._toggleCell(canvasCoordinate);
-  }
-
-  _toggleCell(canvasCoordinate) {
-    const x = Math.floor(canvasCoordinate.x / this._rowLength);
-    const y = Math.floor(canvasCoordinate.y / this._columnLength);
-    const selectedCellIndex = this._selectedCells.findIndex(cell => cell.x === x && cell.y === y);
-    if (selectedCellIndex == -1) {
-      this._drawCell(x, y);
-      this._selectedCells.push(new Cell(x, y));
-    } else {
-      this._clearCell(x, y);
-      this._selectedCells.splice(selectedCellIndex, 1);
+  /**
+   * Gets Cell coordinates corresponding to the provided window coordinates.
+   * @param {number} clickX x coordinate of click event
+   * @param {number} clickY y coordinate of click event
+   * @return {!{x: {number}, y: {number}}} object containing Cell coordinates in the canvas
+   */
+  getCellCoordinates(clickX, clickY) {
+    const canvasX = clickX - this._canvasRect.left;
+    const canvasY = clickY - this._canvasRect.top;
+    return {
+      x: Math.floor(canvasX / this._cellSize),
+      y: Math.floor(canvasY / this._cellSize)
     }
-
   }
 
-  _drawCell(x, y) {
-    this._canvasContext.fillRect(x * this._cellSize, y * this._cellSize, this._cellSize, this._cellSize);
+  /**
+   * Clears previous state of canvas element and draws the provided cells.
+   * @param {!Array<Cell>} cells to be displayed
+   */
+  displayCells(cells) {
+    this._canvasContext.clearRect(0, 0, this._canvasElement.width, this._canvasElement.height);
+    cells.forEach((cell) => {
+      this._drawCell(cell);
+    });
   }
 
-  _clearCell(x, y) {
-    this._canvasContext.clearRect(x * this._cellSize, y * this._cellSize, this._cellSize, this._cellSize);
+  /**
+   * Draws a provided cell as a rectangle.
+   * @param {!Cell} cell to be drawn
+   */
+  _drawCell(cell) {
+    this._canvasContext.fillRect(
+      cell.x * this._cellSize,
+      cell.y * this._cellSize,
+      this._cellSize,
+      this._cellSize);
   }
+
 }

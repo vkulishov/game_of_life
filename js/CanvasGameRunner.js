@@ -3,6 +3,10 @@ const HEIGHT = 400;
 const CELL_SIZE = 20;
 const GAME_SPEED_MS = 500;
 
+/**
+ * Main class for running a Game of life.
+ * It provides controls to the user inputs, i.e. start/stop game, add and remove cells.
+ */
 class CanvasGameRunner {
   constructor(gridCanvasElement, gameCanvasElement) {
     this._gridCanvasElement = gridCanvasElement;
@@ -10,13 +14,16 @@ class CanvasGameRunner {
     this._gridCanvasElement.height = HEIGHT;
     this._gridCanvasElementContext = this._gridCanvasElement.getContext('2d');
 
-    gameCanvasElement.width = WIDTH;
-    gameCanvasElement.height = HEIGHT;
+    this._gameCanvasElement = gameCanvasElement;
+    this._gameCanvasElement.width = WIDTH;
+    this._gameCanvasElement.height = HEIGHT;
 
-    this._gameCanvas = new Canvas(gameCanvasElement, CELL_SIZE);
+    this._gameCanvas = new Canvas(this._gameCanvasElement, CELL_SIZE);
 
-    this._game = null;
+    this._game = new Game();
     this._timer = null;
+
+    this._gameCanvasElement.addEventListener('click', event => this._gameCanvasClickHandler(event));
 
     this._drawGrid();
   }
@@ -25,12 +32,8 @@ class CanvasGameRunner {
    * Executes one step of a game updating game canvas with the new state.
    */
   nextGameStep() {
-    if (!this._game) {
-      this._game = new Game(this._gameCanvas.selectedCells);
-    }
     this._game.tick();
-
-    this._gameCanvas.updateSelectedCells(this._game.cells);
+    this._gameCanvas.displayCells(this._game.cells);
   }
 
   /**
@@ -38,7 +41,7 @@ class CanvasGameRunner {
    */
   runGame() {
     clearInterval(this._timer);
-    this._timer = setInterval( ()=> this.nextGameStep(), GAME_SPEED_MS);
+    this._timer = setInterval(()=> this.nextGameStep(), GAME_SPEED_MS);
   }
 
  /**
@@ -67,5 +70,17 @@ class CanvasGameRunner {
     this._gridCanvasElementContext.closePath();
   }
 
+  /**
+   * Handles click event for game canvas element.
+   * If cell corresponding to the event coordinates already exist, then it
+   * should be removed from the game (killed), otherwise a new cell is added into the game.
+   * Changes to the game state are refleced in game canvas.
+   * @param {!Event} event click event
+   */
+  _gameCanvasClickHandler(event) {
+    const cellCoordinates = this._gameCanvas.getCellCoordinates(event.clientX, event.clientY);
+    this._game.toggleCell(cellCoordinates.x, cellCoordinates.y);
+    this._gameCanvas.displayCells(this._game.cells);
+  }
 
 }

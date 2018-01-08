@@ -1,7 +1,7 @@
 /**
  * Live cell in the Game of life.
- * @param {int} x corrdinate of the cell
- * @param {int} y coordinate of the cell
+ * @param {number} x corrdinate of the cell
+ * @param {number} y coordinate of the cell
  */
 class Cell {
   constructor (x, y) {
@@ -24,8 +24,8 @@ class Cell {
 
   /**
    * Creates a key string corresponding to the provided  coordinates.
-   * @param {int} x coordinate
-   * @param {int} y coordinate
+   * @param {number} x coordinate
+   * @param {number} y coordinate
    * @return {string}
    */
   static getKeyString(x, y) {
@@ -36,7 +36,7 @@ class Cell {
  * Creates an instance of Cell object from the provided key string.
  * @param {string} key to be used to extract x and y properties for a new
  *      created Coordinate. It should have format '${x}|${y}', e.g. 1|2
- * @return {!Coordinate}
+ * @return {!Cell}
  * @throws {!Error} if key has invalid format
  */
   static fromKeyString(key) {

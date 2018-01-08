@@ -10,10 +10,36 @@ describe('Game', () => {
       expect(game.cells).toEqual(cells);
     });
 
-    it('should set liveCellCoordinates', ()=> {
-      expect(game.liveCellCoordinates.size).toEqual(2);
-      expect(game.liveCellCoordinates).toContain('0|0');
-      expect(game.liveCellCoordinates).toContain('0|1');
+    it('should set cellKeys', ()=> {
+      expect(game.cellKeys.size).toEqual(2);
+      expect(game.cellKeys).toContain('0|0');
+      expect(game.cellKeys).toContain('0|1');
+    });
+  });
+
+  describe('toggleCell tests', ()=> {
+    it('should add new cell to game', ()=> {
+      const cells = [new Cell(0, 0), new Cell(0, 1)];
+      const game = new Game(cells);
+
+      game.toggleCell(1, 1);
+
+      expect(game.cellKeys).toContain('1|1');
+      expect(game.cells.find((cell) => {
+        return cell.x === 1 && cell.y === 1;
+      })).toBeDefined();
+    });
+
+    it('should remove existing cell from game', ()=> {
+      const cells = [new Cell(0, 0), new Cell(0, 1)];
+      const game = new Game(cells);
+
+      game.toggleCell(0, 1);
+
+      expect(game.cellKeys).not.toContain('0|1');
+      expect(game.cells.find((cell) => {
+        return cell.x === 0 && cell.y === 1;
+      })).not.toBeDefined();
     });
   });
 
@@ -48,7 +74,7 @@ describe('Game', () => {
 
         game.tick();
 
-        expect(game.liveCellCoordinates).toContain('1|1');
+        expect(game.cellKeys).toContain('1|1');
       });
 
       it('should check that cell with 3 live neighbours survived', ()=> {
@@ -62,7 +88,7 @@ describe('Game', () => {
 
         game.tick();
 
-        expect(game.liveCellCoordinates).toContain('1|1');
+        expect(game.cellKeys).toContain('1|1');
       });
     });
 
@@ -79,7 +105,7 @@ describe('Game', () => {
 
         game.tick();
 
-        expect(game.liveCellCoordinates).not.toContain('1|1');
+        expect(game.cellKeys).not.toContain('1|1');
       })
     });
 
@@ -94,7 +120,7 @@ describe('Game', () => {
 
         game.tick();
 
-        expect(game.liveCellCoordinates).toContain('1|1');
+        expect(game.cellKeys).toContain('1|1');
       });
     });
 
