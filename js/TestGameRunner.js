@@ -15,7 +15,7 @@ class TestGameRunner {
    */
   test_game(seed, num_of_iterations, expected_state) {
     if (!this._isValidInput(seed, num_of_iterations, expected_state)) {
-      console.log('Invalid input: ', seed, num_of_iterations, expected_state);
+      console.warn('Invalid input: ', seed, num_of_iterations, expected_state);
       return false;
     }
 
