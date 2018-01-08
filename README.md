@@ -8,18 +8,23 @@ This is a JS implementation of the Game, based on canvas html element, therefore
 
 ## Running the game
 
-In order to run the game open file 'index.html'. There will be a 20x20 world rendered. Dead cells are in white; alive cells are in black.
+To run the game open file 'index.html'. There will be a 20x20 world rendered. Dead cells are in white; alive cells are in black.
 Click on a cell to change its state.
 
 'Next' button executes one step of the game.
+
 'Start' button starts infinite run of the game switching it to the next state every 0.5 second.
+
 'Stop' button stops running game.
 
 ## Test run of the game
 
 As per requirements a separate function for running tests manually is provided.
-Method test_game(seed, num_of_iterations, expected_state) is defined in class TestGameRunner.js
+
+Method ```test_game(seed, num_of_iterations, expected_state)``` is defined in class TestGameRunner.js
+
 To run the test create instance of the class and call it's method.
+
 Example:
 ```
   var data = {
